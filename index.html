@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event IT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #00aaff, #0066cc);
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #333333;
+            margin-bottom: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        p {
+            color: #777777;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons a:hover {
+            background-color: #004d99;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #777777;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Event IT</h1>
+        <p>Welcome to Event IT! Please select your role to continue.</p>
+
+        <div class="buttons">
+            <a href="/studentlogin">Student</a>
+            <a href="/adminlogin">Admin</a>
+        </div>
+
+        <footer>&copy; 2024 Event IT. All Rights Reserved.</footer>
+    </div>
+
+</body>
+</html>

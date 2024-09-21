@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar 2024</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="bg-primary text-white text-center py-3">
+    <h1>Event Calendar 2024</h1>
+  </header>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar with Dropdown -->
+      <div class="col-2" id="sidebar-left">
+        <h3>Hello There!</h3>
+        <div class="form-group">
+          <label for="view-select">Select View</label>
+          <select class="form-control" id="view-select">
+            <option value="calendar">Monthly Events</option>
+            <option value="events">Weekly Events</option>
+            <option value="details">Registered Events</option>
+          </select>
+        </div>
+        
+        <!-- Monthly Events Dropdown -->
+        <div id="calendar-grid">
+          <h3>Monthly Events</h3>
+          <div class="form-group">
+            <label for="month-select">Select Month</label>
+            <select class="form-control" id="month-select">
+              <option value="0">January</option>
+              <option value="1">February</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+          </div>
+          <div id="calendar-days">
+            <!-- Calendar days will be generated here -->
+          </div>
+        </div>
+
+        <!-- Event List -->
+        <div id="event-list" style="display:none;">
+          <h3>Weekly Events</h3>
+          <div class="row" id="weekly-events">
+            <div class="col" id="monday">
+              <h5>Monday</h5>
+              <div class="event-content" id="events-monday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('monday')">Add Event</button>
+            </div>
+            <div class="col" id="tuesday">
+              <h5>Tuesday</h5>
+              <div class="event-content" id="events-tuesday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('tuesday')">Add Event</button>
+            </div>
+            <div class="col" id="wednesday">
+              <h5>Wednesday</h5>
+              <div class="event-content" id="events-wednesday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('wednesday')">Add Event</button>
+            </div>
+            <div class="col" id="thursday">
+              <h5>Thursday</h5>
+              <div class="event-content" id="events-thursday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('thursday')">Add Event</button>
+            </div>
+            <div class="col" id="friday">
+              <h5>Friday</h5>
+              <div class="event-content" id="events-friday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('friday')">Add Event</button>
+            </div>
+            <div class="col" id="saturday">
+              <h5>Saturday</h5>
+              <div class="event-content" id="events-saturday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('saturday')">Add Event</button>
+            </div>
+            <div class="col" id="sunday">
+              <h5>Sunday</h5>
+              <div class="event-content" id="events-sunday"></div>
+              <button class="btn btn-info btn-sm" onclick="addEvent('sunday')">Add Event</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Details -->
+        <div id="event-details" style="display:none;">
+          <h3>Registered Events</h3>
+          <div id="details-content">
+            <ul id="registered-events-list"></ul>
+            <button class="btn btn-info btn-sm" onclick="addRegisteredEvent()">Add Registered Event</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content Area -->
+      <div class="col-10" id="sidebar-right">
+        <!-- Placeholder for content -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    const events = {}; // Store events by date
+
+    // Function to generate calendar for the selected month
+    function generateCalendar(month) {
+      const calendarDays = document.getElementById('calendar-days');
+      calendarDays.innerHTML = ''; // Clear existing days
+      const daysInMonth = new Date(2024, month + 1, 0).getDate();
+      
+      for (let i = 1; i <= daysInMonth; i++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('calendar-day', 'border', 'p-2', 'text-center');
+
+        // Day number
+        const dayNumber = document.createElement('div');
+        dayNumber.textContent = i;
+        dayDiv.appendChild(dayNumber);
+
+        // Button to add/edit event
+        const eventButton = document.createElement('button');
+        eventButton.textContent = 'Add/Edit Event';
+        eventButton.classList.add('btn', 'btn-info', 'btn-sm');
+        eventButton.onclick = () => openEventModal(i, month + 1); // Open modal for the specific day
+        dayDiv.appendChild(eventButton);
+
+        // Show any existing events
+        if (events[${month + 1}-${i}]) {
+          const existingEvents = document.createElement('div');
+          existingEvents.textContent = events[${month + 1}-${i}];
+          existingEvents.classList.add('mt-2');
+          dayDiv.appendChild(existingEvents);
+        }
+
+        calendarDays.appendChild(dayDiv);
+      }
+    }
+
+    // Event Modal handling
+    function openEventModal(day, month) {
+      $('#eventModal').modal('show');
+      document.getElementById('save-event').onclick = function() {
+        saveEvent(day, month);
+      };
+    }
+
+    function saveEvent(day, month) {
+      const title = document.getElementById('event-title').value;
+      const description = document.getElementById('event-desc').value;
+      events[${month}-${day}] = ${title}: ${description};
+      $('#eventModal').modal('hide');
+      generateCalendar(month - 1); // Regenerate calendar to show updated events
+    }
+
+    // JavaScript to handle dropdown selection
+    document.getElementById('view-select').addEventListener('change', function() {
+      const selectedView = this.value;
+      document.getElementById('calendar-grid').style.display = selectedView === 'calendar' ? 'block' : 'none';
+      document.getElementById('event-list').style.display = selectedView === 'events' ? 'block' : 'none';
+      document.getElementById('event-details').style.display = selectedView === 'details' ? 'block' : 'none';
+    });
+
+    // Initialize calendar view
+    document.getElementById('month-select').addEventListener('change', function() {
+      generateCalendar(parseInt(this.value));
+    });
+
+    // Set initial views
+    document.getElementById('view-select').dispatchEvent(new Event('change'));
+    document.getElementById('month-select').dispatchEvent(new Event('change'));
+
+    // Weekly events functionality
+    const weeklyEvents = {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: []
+    };
+
+    function addEvent(day) {
+      const title = prompt(Enter event title for ${day.charAt(0).toUpperCase() + day.slice(1)}:);
+      if (title) {
+        weeklyEvents[day].push(title);
+        displayEvents(day);
+      }
+    }
+
+    function displayEvents(day) {
+      const eventContent = document.getElementById(events-${day});
+      eventContent.innerHTML = ''; // Clear existing events
+      weeklyEvents[day].forEach(event => {
+        const eventDiv = document.createElement('div');
+        eventDiv.textContent = event;
+        eventContent.appendChild(eventDiv);
+      });
+    }
+
+    // Registered events functionality
+    const registeredEvents = [];
+
+    function addRegisteredEvent() {
+      const title = prompt("Enter the title of the registered event:");
+      if (title) {
+        registeredEvents.push(title);
+        displayRegisteredEvents();
+      }
+    }
+
+    function displayRegisteredEvents() {
+      const list = document.getElementById("registered-events-list");
+      list.innerHTML = ''; // Clear existing events
+      registeredEvents.forEach((event, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = event;
+
+        // Edit button
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit";
+        editButton.classList.add("btn", "btn-warning", "btn-sm", "ml-2");
+        editButton.onclick = () => editRegisteredEvent(index);
+
+        listItem.appendChild(editButton);
+        list.appendChild(listItem);
+      });
+    }
+
+    function editRegisteredEvent(index) {
+      const newTitle = prompt("Edit the title of the registered event:", registeredEvents[index]);
+      if (newTitle) {
+        registeredEvents[index] = newTitle;
+        displayRegisteredEvents();
+      }
+    }
+  </script>
+
+  <!-- Modal for Adding/Editing Events -->
+  <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Add/Edit Event</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="event-title">Event Title</label>
+            <input type="text" class="form-control" id="event-title" placeholder="Enter event title">
+          </div>
+          <div class="form-group">
+            <label for="event-desc">Event Description</label>
+            <textarea class="form-control" id="event-desc" placeholder="Enter event description"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save-event">Save Event</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
